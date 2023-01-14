@@ -1,5 +1,4 @@
 build
-config.ts
 
 lib-cov
 *.seed
