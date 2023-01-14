@@ -45,7 +45,7 @@ const main = async () => {
         let winnerUsername: string = winnerVerifications.data.result.user.username
 
         const castPayload = {
-            text: `${winnerUsername}, Welcome to @purple! 🟪 Here are some links to get you started! \n\nDiscord: ${discordUrl} \nCharmverse: ${charmverseUrl} \nWebsite: ${websiteUrl}`
+            text: `@${winnerUsername}, Welcome to @purple! 🟪 Here are some links to get you started! \n\nDiscord: ${discordUrl} \nCharmverse: ${charmverseUrl} \nWebsite: ${websiteUrl}`
         }
         await safePOST(`${farcasterApi}/casts`, castPayload, true)
       }
