@@ -1,0 +1,98 @@
+lastSeenBlockHeight: 16759281, currentBlockHeight: 16759381
+Found 0 AUCTION_SETTLED events
+lastSeenBlockHeight: 16759381, currentBlockHeight: 16759480
+Found 0 AUCTION_SETTLED events
+lastSeenBlockHeight: 16759480, currentBlockHeight: 16759580
+Found 0 AUCTION_SETTLED events
+lastSeenBlockHeight: 16759580, currentBlockHeight: 16759680
+Found 0 AUCTION_SETTLED events
+lastSeenBlockHeight: 16759680, currentBlockHeight: 16759780
+Found 0 AUCTION_SETTLED events
+lastSeenBlockHeight: 16759780, currentBlockHeight: 16759879
+Found 0 AUCTION_SETTLED events
+lastSeenBlockHeight: 16759879, currentBlockHeight: 16759980
+ClientError: GraphQL Error (Code: 502): {"response":{"error":"\n<html><head>\n<meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\">\n<title>502 Server Error</title>\n</head>\n<body text=#000000 bgcolor=#ffffff>\n<h1>Error: Server Error</h1>\n<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>\n<h2></h2>\n</body></html>\n","status":502,"headers":{}},"request":{"query":"\n  query GetAllAuctionSettledEvents(\n    $endBlock: Int\n    $startBlock: Int\n    $collectionAddresses: [String!]\n  ) {\n    nouns {\n      nounsEvents(\n        filter: {\n          nounsEventTypes: NOUNS_BUILDER_AUCTION_EVENT\n          timeFilter: { endBlock: $endBlock, startBlock: $startBlock }\n          nounsBuilderAuctionEventType: NOUNS_BUILDER_AUCTION_AUCTION_SETTLED_EVENT\n        }\n        networks: { network: ETHEREUM, chain: MAINNET }\n        sort: { sortKey: CREATED, sortDirection: DESC }\n        where: { collectionAddresses: $collectionAddresses }\n      ) {\n        nodes {\n          collectionAddress\n          transactionInfo {\n            blockNumber\n            logIndex\n          }\n          properties {\n            ... on NounsBuilderAuctionEvent {\n              __typename\n              nounsBuilderAuctionEventType\n              properties {\n                ... on NounsBuilderAuctionAuctionSettledEventProperties {\n                  __typename\n                  amountPrice {\n                    chainTokenPrice {\n                      decimal\n                    }\n                  }\n                  tokenId\n                  winner\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n","variables":{"endBlock":16759980,"startBlock":16759879,"collectionAddresses":"0xa45662638E9f3bbb7A6FeCb4B17853B7ba0F3a60"}}}
+    at /home/tyrick/dev/purple-auction-bot/node_modules/graphql-request/dist/index.js:416:31
+    at step (/home/tyrick/dev/purple-auction-bot/node_modules/graphql-request/dist/index.js:67:23)
+    at Object.next (/home/tyrick/dev/purple-auction-bot/node_modules/graphql-request/dist/index.js:48:53)
+    at fulfilled (/home/tyrick/dev/purple-auction-bot/node_modules/graphql-request/dist/index.js:39:58)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5) {
+  response: {
+    error: '\n' +
+      '<html><head>\n' +
+      '<meta http-equiv="content-type" content="text/html;charset=utf-8">\n' +
+      '<title>502 Server Error</title>\n' +
+      '</head>\n' +
+      '<body text=#000000 bgcolor=#ffffff>\n' +
+      '<h1>Error: Server Error</h1>\n' +
+      '<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>\n' +
+      '<h2></h2>\n' +
+      '</body></html>\n',
+    status: 502,
+    headers: Headers { [Symbol(map)]: [Object: null prototype] }
+  },
+  request: {
+    query: '\n' +
+      '  query GetAllAuctionSettledEvents(\n' +
+      '    $endBlock: Int\n' +
+      '    $startBlock: Int\n' +
+      '    $collectionAddresses: [String!]\n' +
+      '  ) {\n' +
+      '    nouns {\n' +
+      '      nounsEvents(\n' +
+      '        filter: {\n' +
+      '          nounsEventTypes: NOUNS_BUILDER_AUCTION_EVENT\n' +
+      '          timeFilter: { endBlock: $endBlock, startBlock: $startBlock }\n' +
+      '          nounsBuilderAuctionEventType: NOUNS_BUILDER_AUCTION_AUCTION_SETTLED_EVENT\n' +
+      '        }\n' +
+      '        networks: { network: ETHEREUM, chain: MAINNET }\n' +
+      '        sort: { sortKey: CREATED, sortDirection: DESC }\n' +
+      '        where: { collectionAddresses: $collectionAddresses }\n' +
+      '      ) {\n' +
+      '        nodes {\n' +
+      '          collectionAddress\n' +
+      '          transactionInfo {\n' +
+      '            blockNumber\n' +
+      '            logIndex\n' +
+      '          }\n' +
+      '          properties {\n' +
+      '            ... on NounsBuilderAuctionEvent {\n' +
+      '              __typename\n' +
+      '              nounsBuilderAuctionEventType\n' +
+      '              properties {\n' +
+      '                ... on NounsBuilderAuctionAuctionSettledEventProperties {\n' +
+      '                  __typename\n' +
+      '                  amountPrice {\n' +
+      '                    chainTokenPrice {\n' +
+      '                      decimal\n' +
+      '                    }\n' +
+      '                  }\n' +
+      '                  tokenId\n' +
+      '                  winner\n' +
+      '                }\n' +
+      '              }\n' +
+      '            }\n' +
+      '          }\n' +
+      '        }\n' +
+      '      }\n' +
+      '    }\n' +
+      '  }\n',
+    variables: {
+      endBlock: 16759980,
+      startBlock: 16759879,
+      collectionAddresses: '0xa45662638E9f3bbb7A6FeCb4B17853B7ba0F3a60'
+    }
+  }
+}
+/home/tyrick/dev/purple-auction-bot/build/src/index.js:26
+            console.log(`Found ${auctionEvents.length} AUCTION_SETTLED events`);
+                                               ^
+
+TypeError: Cannot read properties of undefined (reading 'length')
+    at main (/home/tyrick/dev/purple-auction-bot/build/src/index.js:26:48)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+npm notice 
+npm notice New minor version of npm available! 9.3.0 -> 9.6.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v9.6.0
+npm notice Run npm install -g npm@9.6.0 to update!
+npm notice 
