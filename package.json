@@ -6,6 +6,7 @@
   },
   "scripts": {
     "start": "node build/src/index.js",
+    "create_app_token": "node src/createAppToken.js",
     "lint": "gts lint",
     "clean": "gts clean",
     "compile": "tsc",
@@ -18,10 +19,12 @@
     "@types/dotenv": "^8.2.0",
     "@types/sleep": "^0.0.8",
     "axios": "^1.2.2",
+    "canonicalize": "^1.0.8",
     "dotenv": "^16.0.3",
-    "ethers": "^6.2.0",
+    "ethers": "^5.7.2",
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
+    "https": "^1.0.0",
     "sleep": "^6.3.0",
     "ws": "^8.12.0"
   }
