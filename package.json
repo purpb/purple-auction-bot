@@ -18,6 +18,7 @@
   "dependencies": {
     "@types/dotenv": "^8.2.0",
     "@types/sleep": "^0.0.8",
+    "alchemy-sdk": "^2.6.2",
     "axios": "^1.2.2",
     "canonicalize": "^1.0.8",
     "dotenv": "^16.0.3",

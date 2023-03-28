@@ -1,25 +1,31 @@
 import { sleep } from 'sleep'
 import { getEvents } from './getEvents'
 import { GET_AUCTION_SETTLED_EVENTS } from './queries/auctionsQueries'
-import { networkInfoApi, farcasterApi, pollingInterval, discordUrl, charmverseUrl, websiteUrl } from './config'
+import { farcasterApi, pollingInterval, discordUrl, charmverseUrl, websiteUrl, purpleAddress, alchemyApiKey } from './config'
 import { safeGET, safePOST } from './utils/https'
-
+import { Network, Alchemy } from 'alchemy-sdk'
 
 function pad2(n: number) { return n < 10 ? '0' + n : n }
 
 const main = async () => {
 
-  const initNetworkInfo = await safeGET(networkInfoApi)
-  if(!initNetworkInfo) {
+  const settings = {
+    apiKey: alchemyApiKey,
+    network: Network.ETH_MAINNET
+  }
+  const alchemy = new Alchemy(settings)
+  
+  const startingBlock = await alchemy.core.getBlockNumber()
+  if(!startingBlock) {
     console.error(`Cannot start app. Terminating.`)
     return 
   }
-  var lastSeenBlockHeight = initNetworkInfo.data.height
+  var lastSeenBlockHeight = startingBlock
 
   while(true) {
-    const networkInfo = await safeGET(networkInfoApi)
-    if(!networkInfo) {
-      console.error(`Error getting networkInfo: ${networkInfo}. Trying again later.`)
+    const currentBlockHeight  = await alchemy.core.getBlockNumber()
+    if(!currentBlockHeight) {
+      console.error(`Error getting currentBlockHeight: ${currentBlockHeight}. Trying again later.`)
       sleep(pollingInterval)
       continue 
     }
@@ -27,7 +33,6 @@ const main = async () => {
     const date = new Date();
     const dateString = `${date.getFullYear().toString()}-${pad2(date.getMonth() + 1)}-${pad2( date.getDate())} ${pad2( date.getHours() )}:${pad2( date.getMinutes() )}.${pad2( date.getSeconds() )}`
 
-    const currentBlockHeight = networkInfo.data.height
     console.log(`${dateString}: lastSeenBlockHeight: ${lastSeenBlockHeight}, currentBlockHeight: ${currentBlockHeight}`)
 
     if(currentBlockHeight > lastSeenBlockHeight) {
@@ -58,10 +63,21 @@ const main = async () => {
           continue 
         }
         let winnerUsername: string = winnerVerifications.data.result.user.username
-
-        const castPayload = {
-            text: `@${winnerUsername}, Welcome to @purple! 🟪 Here are some links to get you started! \n\nDiscord: ${discordUrl} \nCharmverse: ${charmverseUrl} \nWebsite: ${websiteUrl}`
+        if(!winnerUsername) {
+          console.error(`Erroring fetching Farcaster username in verifications object for ${winner}. Skipping.`)
+          continue 
         }
+
+        const nftsOwned = await alchemy.nft.getNftsForOwner(winner, { contractAddresses: [purpleAddress!] })
+
+        let castPayload = {
+          text: `@${winnerUsername}, Welcome to @purple! 🟪 Here are some links to get you started!\n\nDiscord: ${discordUrl} \nCharmverse: ${charmverseUrl} \nWebsite: ${websiteUrl}`
+        }
+        if(nftsOwned.totalCount > 1) {
+          castPayload.text = `@${winnerUsername}, Congratulations on winning another @purple! 🟪 You now have a total of ${nftsOwned.totalCount}!\n\nDiscord: ${discordUrl} \nCharmverse: ${charmverseUrl} \nWebsite: ${websiteUrl}`
+        }
+
+        console.log(castPayload)
         await safePOST(`${farcasterApi}/casts`, castPayload, true)
       }
 

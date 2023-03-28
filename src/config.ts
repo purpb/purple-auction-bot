@@ -1,9 +1,6 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config()
 
-// API to get latest block height
-export const networkInfoApi = process.env.APP_NETWORK_INFO_API
-
 // Farcaster API
 export const appBearerToken = process.env.APP_BEARER_TOKEN
 export const farcasterApi = process.env.APP_FARCASTER_API
@@ -17,3 +14,5 @@ export const charmverseUrl = process.env.APP_CHARMVERSE
 export const websiteUrl = process.env.APP_WEBSITE
 
 export const purpleAddress = process.env.APP_PURPLE_ADDRESS
+
+export const alchemyApiKey = process.env.APP_ALCHEMY_API_KEY
