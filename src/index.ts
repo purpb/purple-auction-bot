@@ -23,7 +23,15 @@ const main = async () => {
   var lastSeenBlockHeight = startingBlock
 
   while(true) {
-    const currentBlockHeight  = await alchemy.core.getBlockNumber()
+    let currentBlockHeight
+    try {
+      currentBlockHeight = await alchemy.core.getBlockNumber()
+    } catch(err) {
+      console.error(err)
+      sleep(pollingInterval)
+      continue
+    }
+
     if(!currentBlockHeight) {
       console.error(`Error getting currentBlockHeight: ${currentBlockHeight}. Trying again later.`)
       sleep(pollingInterval)
